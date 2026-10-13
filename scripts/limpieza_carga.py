@@ -14,8 +14,8 @@ Uso:
     python scripts/limpieza_carga.py --solo-limpiar   limpia sin tocar Oracle
     python scripts/limpieza_carga.py ruta/al/archivo.csv
 
-La contraseña de Oracle se pide al ejecutar (o se toma de la variable de
-entorno ORACLE_PASSWORD). No se guarda en ningún archivo.
+El usuario y la contraseña de Oracle se piden al ejecutar. No se guardan
+en ningún archivo.
 
 Reglas aplicadas (ninguna elimina accidentes):
   1. CRASH DATE + CRASH TIME se combinan en CRASH_DATE (tipo DATE).
@@ -29,7 +29,6 @@ Reglas aplicadas (ninguna elimina accidentes):
 """
 import argparse
 import getpass
-import os
 import sys
 from pathlib import Path
 
@@ -41,7 +40,7 @@ RAW_DEFAULT = BASE / "data" / "raw" / "Motor_Vehicle_Collisions_original.csv"
 PROCESSED = BASE / "data" / "processed"
 REPORTS = BASE / "reports"
 
-ORACLE = {"user": "Chang", "host": "localhost", "port": 1521, "service": "XEPDB1"}
+ORACLE = {"host": "localhost", "port": 1521, "service": "XEPDB1"}
 
 # Columna del CSV -> columna de la tabla COLLISIONS (en orden de la tabla)
 COLUMNAS_COLLISIONS = [
@@ -137,6 +136,7 @@ def limpiar(df):
     """Devuelve (collisions, vehicles, log, exc_heridos, exc_fallecidos)."""
     log = []
 
+    # Va mostrando en la terminal el proceso
     def reg(paso, detalle, valor):
         log.append({"paso": paso, "detalle": detalle, "valor": valor})
         print(f"[{paso}] {detalle}: {valor}")
@@ -285,11 +285,11 @@ def insertar(cur, oracledb, tabla, df, tamanos, lote=20000):
 def cargar_oracle(c, v):
     import oracledb
 
-    clave = os.environ.get("ORACLE_PASSWORD") or getpass.getpass(
-        f"Contraseña de Oracle para {ORACLE['user']}: ")
+    usuario = input("Usuario de Oracle: ").strip()
+    clave = getpass.getpass("Contraseña de Oracle: ")
     dsn = f"{ORACLE['host']}:{ORACLE['port']}/{ORACLE['service']}"
     N, D = oracledb.DB_TYPE_NUMBER, oracledb.DB_TYPE_DATE
-    conn = oracledb.connect(user=ORACLE["user"], password=clave, dsn=dsn)
+    conn = oracledb.connect(user=usuario, password=clave, dsn=dsn)
     try:
         cur = conn.cursor()
         for sentencia in DDL:
