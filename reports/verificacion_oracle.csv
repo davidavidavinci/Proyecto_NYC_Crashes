@@ -1,0 +1,9 @@
+﻿prueba,esperado,oracle,estado
+Filas en COLLISIONS,66023,66023,OK
+COLLISION_ID distintos,66023,66023,OK
+Filas en COLLISION_VEHICLE,122664,122664,OK
+Vehículos sin accidente (debe ser 0),0,0,OK
+Suma de PERSONS_KILLED,158,158,OK
+Suma de PERSONS_INJURED,36979,36979,OK
+LATITUDE nulos,2087,2087,OK
+Accidentes sin vehículos,388,388,OK

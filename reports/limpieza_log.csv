@@ -1,0 +1,26 @@
+﻿paso,detalle,valor
+0. Inicio,Filas leídas,66023
+0. Texto,Valores de texto corregidos (espacios sobrantes o vacíos),0
+1. Fecha,Filas sin hora válida (quedan a las 00:00),0
+1. Fecha,Rango de CRASH_DATE,2025-09-01 00:00:00 a 2026-06-11 13:08:00
+2. LOCATION,Filas con LOCATION pero sin coordenadas (se pierden al descartarla),0
+4. Coordenadas,"Filas con (0, 0) convertidas a NULL",1483
+4. Coordenadas,LATITUDE nulos antes -> después,604 -> 2087
+5. Fallecidos,PERSONS_KILLED nulos antes,8878
+5. Fallecidos,Rellenados con la suma de categorías,8878
+5. Fallecidos,Siguen nulos (faltan categorías),0
+5. Fallecidos,Total corregido por no coincidir con la suma (ver excepciones),5
+6. Heridos,Total corregido por no coincidir con la suma,952
+6. Heridos,Total vacío rellenado con la suma,0
+7. Vehículos,Posiciones de vehículo revisadas (5 por accidente),330115
+7. Vehículos,Filas vacías omitidas (sin tipo ni factor),207451
+7. Vehículos,Filas en COLLISION_VEHICLE,122664
+7. Vehículos,Accidentes sin ningún vehículo registrado,388
+8. Largos,BOROUGH: máximo 13 (límite 20),OK
+8. Largos,ZIP_CODE: máximo 5 (límite 10),OK
+8. Largos,ON_STREET_NAME: máximo 32 (límite 100),OK
+8. Largos,CROSS_STREET_NAME: máximo 32 (límite 100),OK
+8. Largos,OFF_STREET_NAME: máximo 40 (límite 100),OK
+8. Largos,VEHICLE_TYPE: máximo 38 (límite 100),OK
+8. Largos,CONTRIBUTING_FACTOR: máximo 53 (límite 100),OK
+9. Final,Filas en COLLISIONS,66023

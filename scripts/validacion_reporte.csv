@@ -1,0 +1,37 @@
+﻿revision,detalle,valor
+0. Origen,Filas,66023
+0. Origen,Columnas,29
+0. Origen,SHA-256 del archivo,1011e72cc52754ab7c2d2c4c7faa049eaa758f6ca99babb421b0edb2c09b6e4f
+1. PK,COLLISION_ID nulos,0
+1. PK,COLLISION_ID duplicados,0
+2. Fechas,Fechas inválidas o nulas,0
+2. Fechas,Fecha mínima,2025-09-01 00:00:00
+2. Fechas,Fecha máxima,2026-06-11 00:00:00
+2b. Faltantes,Columnas con al menos un nulo,19
+2b. Faltantes,Filas completamente duplicadas,0
+2c. Fallecidos nulos,Filas con total de fallecidos nulo,8878
+2c. Fallecidos nulos,...y también heridos nulo,0
+2c. Fallecidos nulos,...con las 3 categorías informadas (total recuperable por suma),8878
+2c. Fallecidos nulos,...sin ninguna categoría informada,0
+2d. Vehículos,Filas con un vehículo informado después de uno vacío,0
+2d. Vehículos,Accidentes sin ningún tipo de vehículo,1241
+3. Consistencia,Filas heridos comparables,66023
+3. Consistencia,Filas con total de heridos distinto a la suma,952
+3. Consistencia,Filas fallecidos comparables,57145
+3. Consistencia,Filas con total de fallecidos distinto a la suma,5
+3b. Negativos,NUMBER OF PERSONS INJURED,0
+3b. Negativos,NUMBER OF PERSONS KILLED,0
+3b. Negativos,NUMBER OF PEDESTRIANS INJURED,0
+3b. Negativos,NUMBER OF CYCLIST INJURED,0
+3b. Negativos,NUMBER OF MOTORIST INJURED,0
+3b. Negativos,NUMBER OF PEDESTRIANS KILLED,0
+3b. Negativos,NUMBER OF CYCLIST KILLED,0
+3b. Negativos,NUMBER OF MOTORIST KILLED,0
+4. Geografía,Solo una coordenada informada,0
+4. Geografía,Fuera de rango mundial,0
+4. Geografía,"Coordenadas (0, 0)",1483
+4. Geografía,"Fuera de la caja de Nueva York (sin contar 0,0)",0
+5. Categorías,BOROUGH nulos,14542
+5. Categorías,BOROUGH distintos,5
+5. Categorías,BOROUGH con espacios sobrantes,0
+5. Categorías,BOROUGH variantes de mayúsculas,0
