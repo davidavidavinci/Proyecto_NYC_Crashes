@@ -225,9 +225,8 @@ SELECT mes,
        ROUND(100 * (colisiones_por_dia - mes_anterior)
                  / NULLIF(mes_anterior, 0), 1)                       AS variacion_pct,
        ROUND(AVG(colisiones_por_dia) OVER (
-                 /* ROWS BETWEEN 2 PRECEDING AND CURRENT ROW define los valores 
-                 que usará, desde dos filas antes hasta la fila actual, es 
-                 decir, tres filas */
+                 /* ROWS BETWEEN 2 PRECEDING AND CURRENT ROW define los valores que usará, desde dos filas 
+                 antes hasta la fila actual, es decir, tres filas */
                  ORDER BY mes ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 1) AS media_movil_3_meses
 FROM   con_anterior
 ORDER  BY mes;
