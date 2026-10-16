@@ -1,6 +1,15 @@
 ﻿paso,detalle,valor
 0. Inicio,Filas leídas,66023
-0. Texto,Valores de texto corregidos (espacios sobrantes o vacíos),0
+0. Texto,ON STREET NAME: valores distintos antes -> después de normalizar,4040 -> 3955
+0. Texto,CROSS STREET NAME: valores distintos antes -> después de normalizar,4536 -> 4477
+0. Texto,OFF STREET NAME: valores distintos antes -> después de normalizar,18693 -> 18692
+0. Texto,VEHICLE TYPE CODE 1: valores distintos antes -> después de normalizar,307 -> 249
+0. Texto,VEHICLE TYPE CODE 2: valores distintos antes -> después de normalizar,344 -> 272
+0. Texto,VEHICLE TYPE CODE 3: valores distintos antes -> después de normalizar,75 -> 71
+0. Texto,VEHICLE TYPE CODE 4: valores distintos antes -> después de normalizar,36 -> 33
+0. Texto,VEHICLE TYPE CODE 5: valores distintos antes -> después de normalizar,16 -> 15
+0. Texto,Valores corregidos por espacios sobrantes o textos vacíos,0
+0. Texto,Valores pasados a mayúsculas,231613
 1. Fecha,Filas sin hora válida (quedan a las 00:00),0
 1. Fecha,Rango de CRASH_DATE,2025-09-01 00:00:00 a 2026-06-11 13:08:00
 2. LOCATION,Filas con LOCATION pero sin coordenadas (se pierden al descartarla),0
