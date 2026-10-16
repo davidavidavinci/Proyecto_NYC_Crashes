@@ -26,6 +26,7 @@ Reglas aplicadas (ninguna elimina accidentes):
   6. PERSONS_INJURED distinto a la suma por categoría = la suma.
   7. Las 5 columnas de vehículos pasan a la tabla COLLISION_VEHICLE
      (una fila por vehículo; se omiten los vehículos sin tipo ni factor).
+  8. Todos los textos (VARCHAR) se pasan a mayúsculas y sin espacios sobrantes.
 """
 import argparse
 import getpass
@@ -128,7 +129,6 @@ DDL = [
     "CREATE INDEX IX_VEH_TYPE     ON COLLISION_VEHICLE (VEHICLE_TYPE)",
 ]
 
-
 # ---------------------------------------------------------------------------
 # Limpieza
 # ---------------------------------------------------------------------------
@@ -136,7 +136,6 @@ def limpiar(df):
     """Devuelve (collisions, vehicles, log, exc_heridos, exc_fallecidos)."""
     log = []
 
-    # Va mostrando en la terminal el proceso
     def reg(paso, detalle, valor):
         log.append({"paso": paso, "detalle": detalle, "valor": valor})
         print(f"[{paso}] {detalle}: {valor}")
@@ -146,15 +145,23 @@ def limpiar(df):
     if df["COLLISION_ID"].isna().any() or df["COLLISION_ID"].duplicated().any():
         raise SystemExit("COLLISION_ID tiene nulos o repetidos: no se puede usar como clave primaria.")
 
-    # Espacios sobrantes y textos vacíos -> NULL
-    cambios = 0
+    # Textos: sin espacios sobrantes, vacíos -> NULL y todo en MAYÚSCULAS
+    # (así 'Sedan', 'SEDAN' y 'sedan ' quedan en un mismo grupo al analizar)
+    cambios_espacios = 0
+    cambios_mayus = 0
     for c in COLUMNAS_TEXTO:
         original = df[c]
-        limpio = original.str.strip()
-        limpio = limpio.mask(limpio == "")
-        cambios += int((original.notna() & ~(original == limpio).fillna(False)).sum())
-        df[c] = limpio
-    reg("0. Texto", "Valores de texto corregidos (espacios sobrantes o vacíos)", cambios)
+        sin_espacios = original.str.strip()
+        sin_espacios = sin_espacios.mask(sin_espacios == "")
+        mayusculas = sin_espacios.str.upper()
+        cambios_espacios += int((original.notna() & ~(original == sin_espacios).fillna(False)).sum())
+        cambios_mayus += int((sin_espacios.notna() & ~(sin_espacios == mayusculas).fillna(False)).sum())
+        antes, despues = int(original.nunique()), int(mayusculas.nunique())
+        if antes != despues:
+            reg("0. Texto", f"{c}: valores distintos antes -> después de normalizar", f"{antes} -> {despues}")
+        df[c] = mayusculas
+    reg("0. Texto", "Valores corregidos por espacios sobrantes o textos vacíos", cambios_espacios)
+    reg("0. Texto", "Valores pasados a mayúsculas", cambios_mayus)
 
     # 1. Fecha + hora en un solo campo DATE
     fecha = pd.to_datetime(df["CRASH DATE"], errors="coerce").dt.normalize()
@@ -250,7 +257,6 @@ def limpiar(df):
     reg("9. Final", "Filas en COLLISIONS", len(c))
     return c, v, pd.DataFrame(log), exc_heridos, exc_fallecidos
 
-
 # ---------------------------------------------------------------------------
 # Oracle
 # ---------------------------------------------------------------------------
@@ -265,11 +271,9 @@ def a_python(v):
         return float(v)
     return v
 
-
 def filas(df):
     return [tuple(a_python(x) for x in fila)
             for fila in df.astype(object).itertuples(index=False, name=None)]
-
 
 def insertar(cur, oracledb, tabla, df, tamanos, lote=20000):
     columnas = list(df.columns)
@@ -280,7 +284,6 @@ def insertar(cur, oracledb, tabla, df, tamanos, lote=20000):
         cur.setinputsizes(*tamanos)
         cur.executemany(sql, datos[i:i + lote])
     print(f"Insertadas {len(datos)} filas en {tabla}")
-
 
 def cargar_oracle(c, v):
     import oracledb
@@ -305,7 +308,6 @@ def cargar_oracle(c, v):
         raise
     finally:
         conn.close()
-
 
 def verificar(cur, c, v):
     def uno(sql):
@@ -335,7 +337,6 @@ def verificar(cur, c, v):
         filas_v.append({"prueba": nombre, "esperado": esperado, "oracle": obtenido, "estado": estado})
         print(f"  {estado:10} {nombre}: esperado {esperado}, Oracle {obtenido}")
     return pd.DataFrame(filas_v)
-
 
 # ---------------------------------------------------------------------------
 def main():

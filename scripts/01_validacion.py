@@ -16,7 +16,6 @@ import pandas as pd
 
 ruta = "data/raw/Motor_Vehicle_Collisions_original.csv"
 
-
 OUT_DIR = Path(__file__).resolve().parent  # los archivos se guardan junto al script
 
 COLS = {
@@ -41,21 +40,17 @@ NY_LON = (-74.3, -73.6)
 
 resultados = []
 
-
 def guardar(frame, nombre, index=False):
     ruta_salida = OUT_DIR / nombre
     frame.to_csv(ruta_salida, index=index, encoding="utf-8-sig")
     print(f"Guardado: {ruta_salida}")
 
-
 def registrar(revision, detalle, valor):
     resultados.append({"revision": revision, "detalle": detalle, "valor": valor})
     print(f"[{revision}] {detalle}: {valor}")
 
-
 SALIDAS = {"validacion_reporte.csv", "faltantes_por_columna.csv",
            "fallecidos_nulos_por_anio.csv"}
-
 
 def main(ruta):
     with open(ruta, "rb") as f:
@@ -160,25 +155,8 @@ def main(ruta):
     registrar("5. Categorías", "BOROUGH variantes de mayúsculas",
               int(con_espacios.str.strip().str.upper().nunique() != con_espacios.str.strip().nunique()))
 
-
-
 if __name__ == "__main__":
     try:
         main(ruta)
     finally:
         guardar(pd.DataFrame(resultados), "validacion_reporte.csv")
-
-
-# ---------------------------------------------------------------
-# 6. Validación posterior a la carga en Oracle (ejecutar en SQL):
-#
-#   SELECT COUNT(*) FROM accidentes;
-#   SELECT COUNT(DISTINCT collision_id) FROM accidentes;
-#
-#   -- Vehículos sin accidente padre (debe dar 0):
-#   SELECT COUNT(*) FROM vehiculos_accidente v
-#   WHERE NOT EXISTS (SELECT 1 FROM accidentes a
-#                     WHERE a.collision_id = v.collision_id);
-#
-# Compará los conteos con el reporte de este script.
-# ---------------------------------------------------------------
