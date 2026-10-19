@@ -1,0 +1,17 @@
+# Dependencias del proyecto Proyecto_NYC_Crashes (Bases de Datos II)
+# Instalacion:  pip install -r requierements.txt
+
+# Manipulacion de datos
+pandas==3.0.2
+numpy==2.4.4
+
+# Ciencia de datos: modelos, clustering y estadistica
+scikit-learn==1.8.0
+scipy==1.17.1
+statsmodels==0.15.0
+
+# Graficos
+matplotlib==3.10.8
+
+# Conexion a Oracle
+oracledb>=2.0

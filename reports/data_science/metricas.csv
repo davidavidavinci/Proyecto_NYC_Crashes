@@ -1,0 +1,4 @@
+conjunto,modelo,n_train,n_test,ROC_AUC,PR_AUC,precision,recall,F1,tasa_base_test
+TRATADO,Regresion logistica (base),49623,16400,0.6662,0.6318,0.7077,0.2902,0.4116,0.438
+TRATADO,Gradient boosting,49623,16400,0.708,0.6815,0.7395,0.371,0.4941,0.438
+
