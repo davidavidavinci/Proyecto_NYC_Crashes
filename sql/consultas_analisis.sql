@@ -38,9 +38,6 @@ ORDER  BY mes;
        -- NVL(valor, reemplazo): Reemplaza un valor null por lo que se indique 
 SELECT NVL(BOROUGH, 'SIN DATO')                                    AS distrito,
        COUNT(*)                                                    AS colisiones,
-       -- Porcentaje que representa a un grupo respecto a total de registros, 
-       -- OVER() hace que se calcule sobre el conjunto completo de resultados, 
-       -- no solo el grupo actual.
        ROUND(100 * COUNT(*) / SUM(COUNT(*)) OVER (), 2)            AS pct_colisiones,
        SUM(PERSONS_INJURED)                                        AS heridos,
        SUM(PERSONS_KILLED)                                         AS fallecidos
@@ -71,9 +68,6 @@ SELECT num_dia,
        SUM(PERSONS_INJURED)                                         AS heridos,
        SUM(PERSONS_KILLED)                                          AS fallecidos
 FROM  (SELECT c.*,
-              -- TRUNC(CRASH_DATE, 'IW'): Devuelve el lunes de la semana en la
-              -- que ocurrió el accidente, así es como calcula el día en que  
-              -- ocurrió el accidente
               TRUNC(CRASH_DATE) - TRUNC(CRASH_DATE, 'IW') + 1       AS num_dia
        FROM   COLLISIONS c)
 GROUP  BY num_dia
@@ -331,15 +325,8 @@ WITH celdas AS (
 ),
 ranking AS (
     SELECT lat, lon, colisiones, heridos, fallecidos,
-           /* RANK asigna un número de posición a cada fila dentro del resultado,
-           basándose en el orden de la coumna especificada*/
            RANK() OVER (ORDER BY colisiones DESC)                                  AS posicion,
            ROUND(100 * colisiones / SUM(colisiones) OVER (), 2)                    AS pct_del_total,
-           /* ROUND() calcula el porcentaje acumulado de colisiones, ordenando 
-           las ubicaciones desde la que tiene más colisiones hasta la que tiene
-           menos, SUM() calcula la suma acumulada de las colisiones.
-           UNBOUNDED PRECEDING: comienza desde la primera fila del conjunto
-           ordenado.*/
            ROUND(100 * SUM(colisiones) OVER (ORDER BY colisiones DESC, lat, lon
                                              ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
                      / SUM(colisiones) OVER (), 2)                                 AS pct_acumulado
